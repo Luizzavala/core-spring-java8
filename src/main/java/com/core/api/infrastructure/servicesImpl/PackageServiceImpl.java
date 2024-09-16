@@ -15,8 +15,8 @@ import java.util.Set;
 
 @Service
 public class PackageServiceImpl implements PackageService {
-    private final String rootPath = "com.fundacion.credito_individual_api";
-    private final String packageName = "com.fundacion.credito_individual_api.Modules";
+    private final String rootPath = "com.core.api";
+    private final String packageName = "com.core.api.modules";
     private String moduleName;
     private String className;
     private String tableName;
@@ -53,7 +53,7 @@ public class PackageServiceImpl implements PackageService {
 
     private Path createModulePath(Path root) {
         Path modulePath = Paths.get(root.toString(),
-                "src", "main", "java", "com", "fundacion", "credito_individual_api", "Modules", moduleName);
+                "src", "main", "java", "com", "core", "api", "modules", moduleName);
         File pathModule = new File(modulePath.toString());
         if (!pathModule.exists()) {
             pathModule.mkdir();
@@ -62,14 +62,14 @@ public class PackageServiceImpl implements PackageService {
     }
 
     private void createApplication(Path modulePath, String className) {
-        Path applicationPath = createFolder(modulePath, "Application");
+        Path applicationPath = createFolder(modulePath, "application");
 
-        Path servicesPath = createFolder(applicationPath, "Services");
+        Path servicesPath = createFolder(applicationPath, "services");
         if (aPackage.getAggregateRoot()) {
             Path serviceClass = createFile(servicesPath, className + "Service");
             createInterface(serviceClass, "Service");
         }
-        Path statusesPath = createFolder(applicationPath, "Statuses");
+        Path statusesPath = createFolder(applicationPath, "statuses");
         if (aPackage.getAggregateRoot()) {
             char[] c = moduleName.toCharArray();
             c[0] = Character.toUpperCase(c[0]);
@@ -77,109 +77,68 @@ public class PackageServiceImpl implements PackageService {
             Path statusClass = createFile(statusesPath, moduleName_ + "Status");
             createStatus(statusClass, moduleName_);
         }
-        Path validatorsPath = createFolder(applicationPath, "Validators");
+        Path validatorsPath = createFolder(applicationPath, "validators");
     }
 
     private void createDomain(Path modulePath, String className) {
-        Path domainPath = createFolder(modulePath, "Domain");
-        Path modelsPath = createFolder(domainPath, "Models");
-        Path valueObjectPath = createFolder(modelsPath, "ValueObject");
+        Path domainPath = createFolder(modulePath, "domain");
+        Path modelsPath = createFolder(domainPath, "models");
+        Path valueObjectPath = createFolder(modelsPath, "valueObject");
         Path modelClass = createFile(modelsPath, className);
         createModel(modelClass);
 
-        Path portsPath = createFolder(domainPath, "Ports");
-        Path inPath = createFolder(portsPath, "Gateway");
+        Path portsPath = createFolder(domainPath, "ports");
+        Path inPath = createFolder(portsPath, "gateway");
         if (aPackage.getAggregateRoot()) {
             Path restClass = createFile(inPath, className + "Rest");
             createInterface(restClass, "Rest");
         }
-        Path outPath = createFolder(portsPath, "DataAccess");
+        Path outPath = createFolder(portsPath, "dataAccess");
         if (aPackage.getAggregateRoot()) {
             Path persistenceClass = createFile(outPath, className + "Persistence");
             createInterface(persistenceClass, "Persistence");
         }
     }
 
-//    private void createInfrastructure(Path modulePath) {
-//        Path infrastructurePath = createFolder(modulePath, "Infrastructure");
-//        Path adaptersPath = createFolder(infrastructurePath, "Adapters");
-//        Path inPath = createFolder(adaptersPath, "In");
-//
-//        Path restPath = createFolder(inPath, "Rest");
-//        if (aPackage.getAggregateRoot()) {
-//            Path controllerClass = createFile(restPath, className + "Controller");
-//            createController(controllerClass);
-//        }
-//
-//        Path outPath = createFolder(adaptersPath, "Out");
-//        Path persistencePath = createFolder(outPath, "Persistence");
-//        Path mysqlPath = createFolder(persistencePath, "Sql");
-//        if (aPackage.getAggregateRoot()) {
-//            Path mysqlPersistenceClass = createFile(mysqlPath, className + "PersistenceSql");
-//            createPersistenceMysql(mysqlPersistenceClass);
-//        }
-//
-//        Path entitiesPath = createFolder(mysqlPath, "Entities");
-//
-//        Path entityClass = createFile(entitiesPath, className + "Entity");
-//        createEntity(entityClass);
-//
-//        Path valueObjectPath = createFolder(entitiesPath, "ValueObject");
-//        Path mappersPath = createFolder(mysqlPath, "Mappers");
-//        Path mapperClass = createFile(mappersPath, className + "Mapper");
-//        createMapper(mapperClass);
-//
-//        Path repositoriesPath = createFolder(mysqlPath, "Repositories");
-//        if (aPackage.getAggregateRoot()) {
-//            Path repositoryClass = createFile(repositoriesPath, className + "Repository");
-//            createRepository(repositoryClass);
-//        }
-//
-//        Path servicesPath = createFolder(infrastructurePath, "ServicesImpl");
-//        if (aPackage.getAggregateRoot()) {
-//            Path serviceClass = createFile(servicesPath, className + "ServiceImpl");
-//            createService(serviceClass);
-//        }
-//    }
 
     private void createInfrastructure(Path modulePath) {
-        Path infrastructurePath = createFolder(modulePath, "Infrastructure");
-        Path adaptersPath = createFolder(infrastructurePath, "Adapters");
-        Path inPath = createFolder(adaptersPath, "In");
+        Path infrastructurePath = createFolder(modulePath, "infrastructure");
+        Path adaptersPath = createFolder(infrastructurePath, "adapters");
+        Path inPath = createFolder(adaptersPath, "in");
 
-        Path restPath = createFolder(inPath, "Rest");
+        Path restPath = createFolder(inPath, "rest");
         if (aPackage.getAggregateRoot()) {
             Path controllerClass = createFile(restPath, className + "Controller");
             createController(controllerClass);
         }
 
-        Path outPath = createFolder(adaptersPath, "Out");
+        Path outPath = createFolder(adaptersPath, "out");
 
-        Path persistencePath = createFolder(outPath, "Persistence");
-        Path mysqlPath = createFolder(persistencePath, "Sql");
+        Path persistencePath = createFolder(outPath, "persistence");
+        Path mysqlPath = createFolder(persistencePath, "sql");
 
         if (aPackage.getAggregateRoot()) {
             Path mysqlPersistenceClass = createFile(mysqlPath, className + "PersistenceSql");
             createPersistenceMysql(mysqlPersistenceClass);
         }
 
-        Path entitiesPath = createFolder(outPath, "Entities");
+        Path entitiesPath = createFolder(outPath, "entities");
         Path entityClass = createFile(entitiesPath, className + "Entity");
         createEntity(entityClass);
 
-        Path valueObjectPath = createFolder(entitiesPath, "ValueObject");
+        Path valueObjectPath = createFolder(entitiesPath, "valueObject");
 
-        Path mappersPath = createFolder(outPath, "Mappers");
+        Path mappersPath = createFolder(outPath, "mappers");
         Path mapperClass = createFile(mappersPath, className + "Mapper");
         createMapper(mapperClass);
 
-        Path repositoriesPath = createFolder(outPath, "Repositories");
+        Path repositoriesPath = createFolder(outPath, "repositories");
         if (aPackage.getAggregateRoot()) {
             Path repositoryClass = createFile(repositoriesPath, className + "Repository");
             createRepository(repositoryClass);
         }
 
-        Path servicesPath = createFolder(infrastructurePath, "ServicesImpl");
+        Path servicesPath = createFolder(infrastructurePath, "servicesImpl");
         if (aPackage.getAggregateRoot()) {
             Path serviceClass = createFile(servicesPath, className + "ServiceImpl");
             createService(serviceClass);
@@ -208,7 +167,7 @@ public class PackageServiceImpl implements PackageService {
     @SneakyThrows
     private void createModel(Path modelClass) {
         FileWriter myWriter = new FileWriter(modelClass.toString());
-        String packageDeclaration = "package " + packageName + "." + moduleName + ".Domain.Models;\n\n";
+        String packageDeclaration = "package " + packageName + "." + moduleName + ".domain.models;\n\n";
         String importStatements = "import lombok.AllArgsConstructor;\n" + "import lombok.Data;\n" + "import lombok.NoArgsConstructor;\n" + "import lombok.experimental.FieldDefaults;\n\n";
         String classNameDeclaration = "@Data\n" + "@AllArgsConstructor\n" + "@NoArgsConstructor\n" + "@FieldDefaults(level = lombok.AccessLevel.PRIVATE)\n" + "public class " + className + " {\n";
         Set<PackageAttributes> packageAttributesSet = new LinkedHashSet<>(aPackage.getPackageAttributes());
@@ -227,17 +186,17 @@ public class PackageServiceImpl implements PackageService {
         FileWriter myWriter = new FileWriter(rest.toString());
         String packageName_ = "";
         if (type == "Rest") {
-            packageName_ = "package " + packageName + "." + moduleName + ".Domain.Ports.Gateway;\n\n";
-            packageName_ += "import " + rootPath + ".Domain.Models.Response;\n";
+            packageName_ = "package " + packageName + "." + moduleName + ".domain.ports.gateway;\n\n";
+            packageName_ += "import " + rootPath + ".domain.models.Response;\n";
         } else if (type == "Persistence") {
-            packageName_ = "package " + packageName + "." + moduleName + ".Domain.Ports.DataAccess;\n\n";
+            packageName_ = "package " + packageName + "." + moduleName + ".domain.ports.dataAccess;\n\n";
             packageName_ += "import java.util.Set;\n";
         } else if (type == "Service") {
-            packageName_ = "package " + packageName + "." + moduleName + ".Application.Services;\n\n";
+            packageName_ = "package " + packageName + "." + moduleName + ".application.services;\n\n";
             packageName_ += "import java.util.Set;\n";
         }
 
-        packageName_ += "import " + packageName + "." + moduleName + ".Domain.Models." + className + ";\n\n";
+        packageName_ += "import " + packageName + "." + moduleName + ".domain.models." + className + ";\n\n";
         String className_ = "public interface " + className + type + " {\n";
         filters = "";
         filtersWithoutType = "";
@@ -286,7 +245,7 @@ public class PackageServiceImpl implements PackageService {
     @SneakyThrows
     private void createStatus(Path path, String moduleName_) {
         FileWriter myWriter = new FileWriter(path.toString());
-        String packageName_ = "package " + packageName + "." + moduleName + ".Application.Statuses;\n\n";
+        String packageName_ = "package " + packageName + "." + moduleName + ".application.statuses;\n\n";
         String className_ = "public class " + moduleName_ + "Status {\n";
         className_ += "    public static final Integer ENABLE = 1;\n";
         className_ += "    public static final Integer DISABLE = 2;\n";
@@ -299,8 +258,8 @@ public class PackageServiceImpl implements PackageService {
     @SneakyThrows
     private void createController(Path path) {
         FileWriter myWriter = new FileWriter(path.toString());
-        String packageName_ = "package " + packageName + "." + moduleName + ".Infrastructure.Adapters.In.Rest;\n\n";
-        packageName_ += "import org.springframework.beans.factory.annotation.Autowired;\n" + "import org.springframework.http.HttpStatus;\n" + "import org.springframework.web.bind.annotation.*;\n" + "import " + rootPath + ".Domain.Models.Response;\n" + "import " + packageName + "." + moduleName + ".Domain.Models." + className + ";\n" + "import " + packageName + "." + moduleName + ".Domain.Ports.Gateway." + className + "Rest;\n" + "import " + packageName + "." + moduleName + ".Application.Services." + className + "Service;\n\n" + "import java.util.HashSet;\n" + "import java.util.Set;\n\n";
+        String packageName_ = "package " + packageName + "." + moduleName + ".infrastructure.adapters.in.rest;\n\n";
+        packageName_ += "import org.springframework.beans.factory.annotation.Autowired;\n" + "import org.springframework.http.HttpStatus;\n" + "import org.springframework.web.bind.annotation.*;\n" + "import " + rootPath + ".domain.models.Response;\n" + "import " + packageName + "." + moduleName + ".domain.models." + className + ";\n" + "import " + packageName + "." + moduleName + ".domain.ports.gateway." + className + "Rest;\n" + "import " + packageName + "." + moduleName + ".application.services." + className + "Service;\n\n" + "import java.util.HashSet;\n" + "import java.util.Set;\n\n";
 
         String className_ = "@RestController\n@RequestMapping()\n";
         className_ += "public class " + className + "Controller implements " + className + "Rest {\n";
@@ -350,7 +309,7 @@ public class PackageServiceImpl implements PackageService {
     private void createPersistenceMysql(Path path) {
         FileWriter myWriter = new FileWriter(path.toString());
         String capitalizedId = id.substring(0, 1).toUpperCase() + id.substring(1);
-        String packageName_ = "package " + packageName + "." + moduleName + ".Infrastructure.Adapters.Out.Persistence.Sql;\n\n" + "import " + rootPath + ".Infrastructure.Adapters.Out.Persistence.Sql.CriteriaAdapter;\n" + "import org.springframework.beans.factory.annotation.Autowired;\n" + "import org.springframework.stereotype.Service;\n" + "import jakarta.persistence.EntityManagerFactory;\n" + "import jakarta.persistence.criteria.Predicate;\n" + "import java.util.LinkedHashSet;\n" + "import java.util.Set;\n" + "import " + packageName + "." + moduleName + ".Domain.Models." + className + ";\n" + "import " + packageName + "." + moduleName + ".Domain.Ports.DataAccess." + className + "Persistence;\n" + "import " + packageName + "." + moduleName + ".Infrastructure.Adapters.Out.Entities." + className + "Entity;\n" + "import " + packageName + "." + moduleName + ".Infrastructure.Adapters.Out.Mappers." + className + "Mapper;\n" + "import " + packageName + "." + moduleName + ".Infrastructure.Adapters.Out.Repositories." + className + "Repository;\n\n";
+        String packageName_ = "package " + packageName + "." + moduleName + ".infrastructure.adapters.out.persistence.sql;\n\n" + "import " + rootPath + ".infrastructure.adapters.out.persistence.sql.CriteriaAdapter;\n" + "import org.springframework.beans.factory.annotation.Autowired;\n" + "import org.springframework.stereotype.Service;\n" + "import javax.persistence.EntityManagerFactory;\n" + "import javax.persistence.criteria.Predicate;\n" + "import java.util.LinkedHashSet;\n" + "import java.util.Set;\n" + "import " + packageName + "." + moduleName + ".domain.models." + className + ";\n" + "import " + packageName + "." + moduleName + ".domain.ports.dataAccess." + className + "Persistence;\n" + "import " + packageName + "." + moduleName + ".infrastructure.adapters.out.entities." + className + "Entity;\n" + "import " + packageName + "." + moduleName + ".infrastructure.adapters.out.mappers." + className + "Mapper;\n" + "import " + packageName + "." + moduleName + ".infrastructure.adapters.out.repositories." + className + "Repository;\n\n";
         String className_ = "@Service\n" + "public class " + className + "PersistenceSql implements " + className + "Persistence {\n" + "    @Autowired\n" + "    private " + className + "Repository " + classNameLowerCase + "Repository;\n" + "    @Autowired\n" + "    private " + className + "Mapper " + classNameLowerCase + "Mapper;\n" + "    @Autowired\n" + "    private EntityManagerFactory entityManagerFactory;\n\n" + "    @Override\n" + "    public Set<" + className + "> getAll(" + filters + ") {\n" + "        CriteriaAdapter<" + className + "Entity> criteriaAdapter = new CriteriaAdapter<>(entityManagerFactory);\n" + "        criteriaAdapter.init(" + className + "Entity.class);\n" + "        Set<Predicate> predicates = new LinkedHashSet<>();\n" + "        criteriaAdapter.where(criteriaAdapter.and(predicates.toArray(new Predicate[0])));\n" + "        Set<" + className + "Entity> " + classNameLowerCase + "Entity = criteriaAdapter.getResultList();\n" + "        criteriaAdapter.close();\n" + "        return " + classNameLowerCase + "Mapper.toModelList(" + classNameLowerCase + "Entity);\n" + "    }\n\n" + "    @Override\n" + "    public " + className + " getById(" + pk + "){\n" + "        CriteriaAdapter<" + className + "Entity> criteriaAdapter = new CriteriaAdapter<>(entityManagerFactory);\n" + "        criteriaAdapter.init(" + className + "Entity.class);\n" + "        criteriaAdapter.where(criteriaAdapter.equal(\"" + id + "\", " + id + "));\n" + "        " + className + "Entity " + classNameLowerCase + "Entity = criteriaAdapter.getResultList().stream().findFirst().orElse(new " + className + "Entity());\n" + "        criteriaAdapter.close();\n" + "        if( " + classNameLowerCase + "Entity.get" + capitalizedId + "() != null ) {\n" + "            return " + classNameLowerCase + "Mapper.toModel(" + classNameLowerCase + "Entity);\n" + "        } else {\n" + "            return null;\n" + "        }" + "    }\n\n" + "    @Override\n" + "    public " + className + " save(" + className + " " + classNameLowerCase + "){\n" + "        " + className + "Entity " + classNameLowerCase + "Entity = " + classNameLowerCase + "Mapper.toEntity(" + classNameLowerCase + ");\n" + "        " + classNameLowerCase + "Entity = " + classNameLowerCase + "Repository.save(" + classNameLowerCase + "Entity);\n" + "        return " + classNameLowerCase + "Mapper.toModel(" + classNameLowerCase + "Entity);\n" + "    }\n\n" + "}";
         myWriter.write(packageName_ + className_);
         myWriter.close();
@@ -359,8 +318,8 @@ public class PackageServiceImpl implements PackageService {
     @SneakyThrows
     private void createEntity(Path path) {
         FileWriter myWriter = new FileWriter(path.toString());
-        String packageName_ = "package " + packageName + "." + moduleName + ".Infrastructure.Adapters.Out.Entities;\n\n";
-        packageName_ += "import lombok.Getter;\nimport lombok.Setter;\nimport jakarta.persistence.*;\nimport java.io.Serializable;\n\n";
+        String packageName_ = "package " + packageName + "." + moduleName + ".infrastructure.adapters.out.entities;\n\n";
+        packageName_ += "import lombok.Getter;\nimport lombok.Setter;\nimport javax.persistence.*;\nimport java.io.Serializable;\n\n";
         packageName_ += "@Entity\n";
         packageName_ += "@Table(name = \"" + tableName + "\")\n";
         packageName_ += "@Getter\n";
@@ -388,8 +347,8 @@ public class PackageServiceImpl implements PackageService {
         String entityNameLower = classNameLowerCase + "Entity";
         String entitiesNameLower = classNameLowerCase + "Entities";
 
-        String packageName_ = "package " + packageName + "." + moduleName + ".Infrastructure.Adapters.Out.Mappers;\n\n";
-        packageName_ += "import " + rootPath + ".Domain.Ports.DataAccess.IMapper;\n" + "import " + rootPath + ".Infrastructure.Adapters.Out.Mappers.Mapper;\n" + "import " + packageName + "." + moduleName + ".Domain.Models." + className + ";\n" + "import " + packageName + "." + moduleName + ".Infrastructure.Adapters.Out.Entities." + className + "Entity;\n" + "import org.springframework.stereotype.Service;\n" + "import java.util.LinkedHashSet;\nimport java.util.Set;\n\n";
+        String packageName_ = "package " + packageName + "." + moduleName + ".infrastructure.adapters.out.mappers;\n\n";
+        packageName_ += "import " + rootPath + ".domain.ports.dataAccess.IMapper;\n" + "import " + rootPath + ".infrastructure.adapters.out.mappers.Mapper;\n" + "import " + packageName + "." + moduleName + ".domain.models." + className + ";\n" + "import " + packageName + "." + moduleName + ".infrastructure.adapters.out.entities." + className + "Entity;\n" + "import org.springframework.stereotype.Service;\n" + "import java.util.LinkedHashSet;\nimport java.util.Set;\n\n";
         String className_ = "@Service\n public class " + className + "Mapper extends Mapper<" + className + ", " + className + "Entity> " + "implements IMapper<" + className + ", " + className + "Entity> { \n";
 
         String toModelMethod = "    @Override\n" + "    public " + className + " toModel(" + entityName + " " + entityNameLower + ") {\n" + "        return mapperEntityToModel(" + entityNameLower + ", new " + className + "());\n" + "    }\n\n";
@@ -406,7 +365,7 @@ public class PackageServiceImpl implements PackageService {
     @SneakyThrows
     private void createRepository(Path path) {
         FileWriter myWriter = new FileWriter(path.toString());
-        String packageName_ = "package " + packageName + "." + moduleName + ".Infrastructure.Adapters.Out.Repositories;\n\n" + "import org.springframework.data.jpa.repository.JpaRepository;\n" + "import org.springframework.stereotype.Repository;\n" + "import " + packageName + "." + moduleName + ".Infrastructure.Adapters.Out.Entities." + className + "Entity;\n\n";
+        String packageName_ = "package " + packageName + "." + moduleName + ".infrastructure.adapters.out.repositories;\n\n" + "import org.springframework.data.jpa.repository.JpaRepository;\n" + "import org.springframework.stereotype.Repository;\n" + "import " + packageName + "." + moduleName + ".infrastructure.adapters.out.entities." + className + "Entity;\n\n";
         String className_ = "@Repository\n" + "public interface " + className + "Repository extends JpaRepository<" + className + "Entity, Integer>{\n" + "}";
         myWriter.write(packageName_ + className_);
         myWriter.close();
@@ -419,8 +378,8 @@ public class PackageServiceImpl implements PackageService {
         c[0] = Character.toUpperCase(c[0]);
         String moduleName_ = new String(c);
 
-        String packageName_ = "package " + packageName + "." + moduleName + ".Infrastructure.ServicesImpl;\n\n";
-        packageName_ += "import org.springframework.beans.factory.annotation.Autowired;\n" + "import org.springframework.stereotype.Service;\n" + "import " + packageName + "." + moduleName + ".Domain.Models." + className + ";\n" + "import " + packageName + "." + moduleName + ".Domain.Ports.DataAccess." + className + "Persistence;\n" + "import " + packageName + "." + moduleName + ".Application.Statuses." + moduleName_ + "Status;\n" + "import " + packageName + "." + moduleName + ".Application.Services." + className + "Service;\n" + "import java.util.Set;\n\n";
+        String packageName_ = "package " + packageName + "." + moduleName + ".infrastructure.servicesImpl;\n\n";
+        packageName_ += "import org.springframework.beans.factory.annotation.Autowired;\n" + "import org.springframework.stereotype.Service;\n" + "import " + packageName + "." + moduleName + ".domain.models." + className + ";\n" + "import " + packageName + "." + moduleName + ".domain.ports.dataAccess." + className + "Persistence;\n" + "import " + packageName + "." + moduleName + ".application.statuses." + moduleName_ + "Status;\n" + "import " + packageName + "." + moduleName + ".application.services." + className + "Service;\n" + "import java.util.Set;\n\n";
         String className_ = "@Service\n" + "public class " + className + "ServiceImpl implements " + className + "Service {\n" + "    @Autowired\n    private " + className + "Persistence " + classNameLowerCase + "Persistence;\n\n" + "    @Override\n    public Set<" + className + "> getAll(" + filters + ") {\n" + "        return " + classNameLowerCase + "Persistence.getAll(" + filtersWithoutType + ");\n" + "    }\n\n" + "    @Override\n    public " + className + " getById(" + pk + ") {\n" + "        return " + classNameLowerCase + "Persistence.getById(" + id + ");\n" + "    }\n\n" + "    @Override\n    public " + className + " save(" + className + " " + classNameLowerCase + "){ \n" + "        return " + classNameLowerCase + "Persistence.save(" + classNameLowerCase + ");\n" + "    }\n\n" + "    @Override\n     public " + className + " enable(" + className + " " + classNameLowerCase + "){\n" + "        " + classNameLowerCase + ".setStatus(" + moduleName_ + "Status.ENABLE);\n" + "        return " + classNameLowerCase + "Persistence.save(" + classNameLowerCase + ");\n" + "    }\n\n" + "    @Override\n     public " + className + " disable(" + className + " " + classNameLowerCase + "){\n" + "        " + classNameLowerCase + ".setStatus(" + moduleName_ + "Status.DISABLE);\n" + "        return " + classNameLowerCase + "Persistence.save(" + classNameLowerCase + ");\n" + "    }\n\n" + "    @Override\n    public " + className + " delete(" + className + " " + classNameLowerCase + "){\n" + "        " + classNameLowerCase + ".setStatus(" + moduleName_ + "Status.DELETED);\n" + "        return " + classNameLowerCase + "Persistence.save(" + classNameLowerCase + ");\n" + "    }\n\n" + "}";
         myWriter.write(packageName_ + className_);
         myWriter.close();
