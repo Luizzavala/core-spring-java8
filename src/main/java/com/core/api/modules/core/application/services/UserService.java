@@ -16,4 +16,5 @@ public interface UserService {
     User disable(User user);
 
     User delete(User user);
+    User login(String userName, String password);
 }
