@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
     public User enable(User user) {
         user.setStatus(CoreStatus.ENABLE);
         user.getPerson().setStatus(CoreStatus.ENABLE);
+        user.setDisabledAt(null);
         return userPersistence.save(user);
     }
 
@@ -58,6 +59,7 @@ public class UserServiceImpl implements UserService {
     public User disable(User user) {
         user.setStatus(CoreStatus.DISABLE);
         user.getPerson().setStatus(CoreStatus.DISABLE);
+        user.setDisabledAt(customTimeService.getLocalDataTime());
         return userPersistence.save(user);
     }
 
@@ -65,6 +67,7 @@ public class UserServiceImpl implements UserService {
     public User delete(User user) {
         user.setStatus(CoreStatus.DELETED);
         user.getPerson().setStatus(CoreStatus.DELETED);
+        user.setDisabledAt(customTimeService.getLocalDataTime());
         return userPersistence.save(user);
     }
 
@@ -77,7 +80,7 @@ public class UserServiceImpl implements UserService {
                 return null;
             }
         }
-        user.setCreateAt(customTimeService.getLocalDataTime());
+        user.setLastLogin(customTimeService.getLocalDataTime());
         userPersistence.save(user);
         return user;
     }
