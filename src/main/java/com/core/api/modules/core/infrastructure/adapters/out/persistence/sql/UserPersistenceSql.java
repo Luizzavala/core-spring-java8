@@ -74,4 +74,19 @@ public class UserPersistenceSql implements UserPersistence {
         return userMapper.toModel(userEntity);
     }
 
+    @Override
+    public User login(String userName) {
+        CriteriaAdapter<UserEntity> criteriaAdapter = new CriteriaAdapter<>(entityManagerFactory);
+        criteriaAdapter.init(UserEntity.class);
+        criteriaAdapter.setFetchGraph("user-graph");
+        criteriaAdapter.where(criteriaAdapter.equal("userName", userName));
+        UserEntity userEntity = criteriaAdapter.getResultList().stream().findFirst().orElse(new UserEntity());
+        criteriaAdapter.close();
+        if (userEntity.getIdUser() != null) {
+            return userMapper.toModel(userEntity);
+        } else {
+            return null;
+        }
+    }
+
 }

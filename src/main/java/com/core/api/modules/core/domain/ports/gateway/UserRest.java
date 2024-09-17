@@ -10,4 +10,5 @@ public interface UserRest {
     Response<?> enable(User user);
     Response<?> disable(User user);
     Response<?> delete(User user);
+    Response<?> login(User user);
 }

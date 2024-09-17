@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -22,4 +23,7 @@ public class User {
     LocalDateTime disabledAt;
     Integer isCorporate;
     Integer status;
+    String token;
+    Date expiredAt;
+
 }
