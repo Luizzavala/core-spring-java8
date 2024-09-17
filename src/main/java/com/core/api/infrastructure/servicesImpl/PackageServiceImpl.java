@@ -231,11 +231,11 @@ public class PackageServiceImpl implements PackageService {
             className_ += "    Set<" + returnType + "> getAll(" + filter_ + ");\n";
         }
         className_ += "    " + returnType + " getById(" + pk + ");\n";
-        className_ += "    " + returnType + " save(" + aPackage.getPackageName() + " " + packageName + ");\n";
+        className_ += "    " + returnType + " save(" + aPackage.getPackageName() + " " + packageName.toLowerCase() + ");\n";
         if (type != "Persistence") {
-            className_ += "    " + returnType + " enable(" + aPackage.getPackageName() + " " + packageName + ");\n";
-            className_ += "    " + returnType + " disable(" + aPackage.getPackageName() + " " + packageName + ");\n";
-            className_ += "    " + returnType + " delete(" + aPackage.getPackageName() + " " + packageName + ");\n";
+            className_ += "    " + returnType + " enable(" + aPackage.getPackageName() + " " + packageName.toLowerCase() + ");\n";
+            className_ += "    " + returnType + " disable(" + aPackage.getPackageName() + " " + packageName.toLowerCase() + ");\n";
+            className_ += "    " + returnType + " delete(" + aPackage.getPackageName() + " " + packageName.toLowerCase() + ");\n";
         }
         className_ += "}";
         myWriter.write(packageName_ + className_);
