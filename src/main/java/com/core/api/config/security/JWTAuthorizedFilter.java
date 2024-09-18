@@ -110,7 +110,7 @@ public class JWTAuthorizedFilter extends OncePerRequestFilter {
                 .setExpiration(expiredAt)
                 .signWith(SignatureAlgorithm.HS512,
                         SECRET.getBytes()).compact();
-        return new Token(token, expiredAt);
+        return new Token("Bearer " + token, expiredAt);
     }
 
 }

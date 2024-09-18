@@ -20,7 +20,6 @@ public class WebSecurityConfig {
                 .addFilterAfter(new JWTAuthorizedFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/api/users/login").permitAll()
-                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated();
         http.cors();
         return http.build();
