@@ -57,7 +57,8 @@ public abstract class Mapper<M, E> {
             } catch (org.hibernate.LazyInitializationException e) {
                 return false;
             }
-        } else if (object instanceof PersistentSet persistentSet) {
+        } else if (object instanceof PersistentSet) {
+            PersistentSet persistentSet = (PersistentSet) object;
             return persistentSet.wasInitialized();
         }
         return true;

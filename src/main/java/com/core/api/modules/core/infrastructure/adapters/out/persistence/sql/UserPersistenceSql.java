@@ -1,6 +1,7 @@
 package com.core.api.modules.core.infrastructure.adapters.out.persistence.sql;
 
 import com.core.api.infrastructure.adapters.out.persistence.sql.CriteriaAdapter;
+import com.core.api.modules.core.application.statuses.CoreStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -79,7 +80,10 @@ public class UserPersistenceSql implements UserPersistence {
         CriteriaAdapter<UserEntity> criteriaAdapter = new CriteriaAdapter<>(entityManagerFactory);
         criteriaAdapter.init(UserEntity.class);
         criteriaAdapter.setFetchGraph("user-graph");
-        criteriaAdapter.where(criteriaAdapter.equal("userName", userName));
+        Set<Predicate> predicates = new LinkedHashSet<>();
+        predicates.add(criteriaAdapter.equal("userName", userName));
+        predicates.add(criteriaAdapter.equal("status", CoreStatus.ENABLE));
+        criteriaAdapter.where(criteriaAdapter.and(predicates.toArray(new Predicate[0])));
         UserEntity userEntity = criteriaAdapter.getResultList().stream().findFirst().orElse(new UserEntity());
         criteriaAdapter.close();
         if (userEntity.getIdUser() != null) {

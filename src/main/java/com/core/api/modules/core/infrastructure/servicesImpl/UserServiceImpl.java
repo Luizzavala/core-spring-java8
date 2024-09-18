@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
                     updatePasswordIfNecessary(existingUser, user);
                     return userPersistence.save(user);
                 }
-            }else {
+            } else {
                 user.setIdUser(null);
             }
         }
@@ -74,9 +74,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(String userName, String password) {
         User user = userPersistence.login(userName);
-        if( user.getIdUser() != null ) {
+        if (user == null) {
+            return null;
+        } else if (user.getIdUser() != null) {
             boolean checkPass = BCrypt.checkpw(password, user.getPassword());
-            if( !checkPass ) {
+            if (!checkPass) {
                 return null;
             }
         }
